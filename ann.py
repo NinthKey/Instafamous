@@ -9,7 +9,7 @@ def save_obj(obj, name):
 	with open(name + '.pkl', 'wb+') as f:
 		pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
         
-dataset = load_obj('input')
+dataset = load_obj('all')
 for row in dataset:
     del row[0]
                 
@@ -23,6 +23,7 @@ from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X = sc.fit_transform(X)
 
+save_obj(sc, 'sc')
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
@@ -44,29 +45,20 @@ regressor.add(Dense(units = 88, kernel_initializer = 'normal', activation = 'rel
 regressor.add(Dropout(0.2))
 # Adding the second hidden layer
 regressor.add(Dense(units = 88, kernel_initializer = 'normal', activation = 'relu'))
-regressor.add(Dropout(0.1))
+regressor.add(Dropout(0.2))
 # Adding the second hidden layer
-regressor.add(Dense(units = 88, kernel_initializer = 'normal', activation = 'relu'))
-regressor.add(Dropout(0.1))
-# Adding the second hidden layer
-regressor.add(Dense(units = 88, kernel_initializer = 'normal', activation = 'relu'))
-regressor.add(Dropout(0.1))
-# Adding the second hidden layer
-regressor.add(Dense(units = 88, kernel_initializer = 'normal', activation = 'relu'))
-regressor.add(Dropout(0.1))
-# Adding the second hidden layer
-regressor.add(Dense(units = 88, kernel_initializer = 'normal', activation = 'relu'))
-regressor.add(Dropout(0.1))
 # Adding the output layer
 regressor.add(Dense(units = 1, kernel_initializer = 'normal'))
 
 # Compiling the ANN
-regressor.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
+regressor.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae'])
 
 # Fitting the ANN to the Training set
-regressor.fit(X_train, y_train, batch_size = 2, epochs = 1000)
+regressor.fit(X_train, y_train, batch_size = 20, epochs = 50)
 
 # Part 3 - Making predictions and evaluating the model
 
 # Predicting the Test set results
 y_pred = regressor.predict(X_test)
+
+regressor.save('test.h5')
