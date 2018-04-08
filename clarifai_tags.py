@@ -134,5 +134,11 @@ users = users[143:]
 
 X = preprocess_data(model, users, tag_count)
 
-save_obj(X, 'input2')
+
+X1 = load_obj('input')
+X2 = load_obj('input2')
+
+X3 = X1 + X2
+
+save_obj(X3, 'all')
 
