@@ -44,7 +44,7 @@ def get_images_tags(model, images, threshold = 0.90):
     index = 0
     end = len(images);
     
-    while index < end:
+    while index < end and index + 128 < 5000:
         if end - index > 128:
             response = model.predict(images[index:index+128])
             index += 128
@@ -57,6 +57,7 @@ def get_images_tags(model, images, threshold = 0.90):
                 if concept['value'] >= threshold:
                     tags.append(concept['name'])               
             tag_list.append(tags)
+            
     return tag_list
 
 
@@ -82,6 +83,10 @@ def preprocess_data(model, users, input_tags):
                     row.append(0)
             row.append(post['likes'])
             result.append(row)
+            if nrow == len(tag_list)-1:
+                break
+        if nrow == len(tag_list)-1:
+            break
     return result
     
 
@@ -94,7 +99,7 @@ def save_obj(obj, name):
 		pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
 
-app = ClarifaiApp(api_key='dceb65338e364f678ae086f17b2d5ebd')
+app = ClarifaiApp(api_key='e03f648f9f84485e96008090c27eacd3')
 model = app.models.get('general-v1.3')
 """
 images = []
@@ -124,8 +129,10 @@ save_obj(tag_count, '4orabovetags')
 """ 
 tag_count = load_obj('4orabovetags')
 users = load_obj('temp')
+users = users[143:]
+
 
 X = preprocess_data(model, users, tag_count)
 
-save_obj(X, 'input')
+save_obj(X, 'input2')
 
