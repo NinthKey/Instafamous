@@ -29,15 +29,14 @@ def load_obj(name):
 	with open(name + '.pkl', 'rb+') as f:
 		return pickle.load(f)
 
-regressor_file = input('Enter the model name:')
-regressor = load_model(regressor_file)
+regressor = load_model('my_model.h5')
 
 nfollowers = input('Enter the number of followers you have:')
 nfollowing = input('Enter the number of people you are following:')
 nposts = input('Enter the total number of posts you have:')
-hashtags = input('Enter the hashtags you use:')
+hashtags = '0'
 url = input('Enter a url to the image:')
-
+nfollowers = int(int(nfollowers)/50)
 
 
 app = ClarifaiApp(api_key='e03f648f9f84485e96008090c27eacd3')
